@@ -36,5 +36,25 @@ function onEdit(e) {
   }
 }
 
+/**
+ * Creates a new text file with the provided note and saves it to a specific Google Drive folder.
+ * @param {string} note - The content to be written in the file.
+ * @param {number} row - The row number being processed.
+ */
+function sendToFileService(note, row) {
+  const folderId = "1wWfxgdXZUztIt4cFUy7U7nJlLFBKVotQ"; // Replace with real folder ID
 
+  try {
+    const folder = DriveApp.getFolderById(folderId);
+    const fileName = `notification_${new Date().getTime()}.txt`;
+    const content = note;
+
+    const blob = Utilities.newBlob(content, 'text/plain', fileName);
+    folder.createFile(blob);
+
+    Logger.log("File created successfully");
+  } catch (error) {
+    Logger.log("Error writing file: "+ note + row+ error);
+  }
+}
 
